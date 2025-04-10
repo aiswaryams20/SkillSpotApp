@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+} from 'react-native';
 import { supabase } from '../config/supabase';
 
 const StudentSignupScreen = ({ navigation }) => {
@@ -9,18 +18,13 @@ const StudentSignupScreen = ({ navigation }) => {
   const [skills, setSkills] = useState('');
 
   const handleSignup = async () => {
-    // ✅ Sign up in Supabase Auth
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    const { data, error } = await supabase.auth.signUp({ email, password });
 
     if (error) {
       Alert.alert('Error', error.message);
       return;
     }
 
-    // ✅ Add user profile to "users" table
     const { error: profileError } = await supabase
       .from('users')
       .insert([
@@ -40,85 +44,90 @@ const StudentSignupScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: 'center' }}>
-      <Text style={{ fontSize: 32, fontWeight: '700', color: '#222', marginBottom: 20 }}>
-        Student Signup 🎓
-      </Text>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={INDIGO} barStyle="light-content" />
+      <Text style={styles.heading}>Student Signup</Text>
 
       <TextInput
         placeholder="Full Name"
+        placeholderTextColor="#999"
         value={fullName}
         onChangeText={setFullName}
-        style={{
-          backgroundColor: '#F7F7F7',
-          padding: 16,
-          borderRadius: 12,
-          borderWidth: 1,
-          borderColor: '#E0E0E0',
-          marginBottom: 12,
-        }}
+        style={styles.input}
       />
 
       <TextInput
         placeholder="Email"
+        placeholderTextColor="#999"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
-        style={{
-          backgroundColor: '#F7F7F7',
-          padding: 16,
-          borderRadius: 12,
-          borderWidth: 1,
-          borderColor: '#E0E0E0',
-          marginBottom: 12,
-        }}
+        style={styles.input}
       />
 
       <TextInput
         placeholder="Password"
+        placeholderTextColor="#999"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        style={{
-          backgroundColor: '#F7F7F7',
-          padding: 16,
-          borderRadius: 12,
-          borderWidth: 1,
-          borderColor: '#E0E0E0',
-          marginBottom: 12,
-        }}
+        style={styles.input}
       />
 
       <TextInput
         placeholder="Skills"
+        placeholderTextColor="#999"
         value={skills}
         onChangeText={setSkills}
-        style={{
-          backgroundColor: '#F7F7F7',
-          padding: 16,
-          borderRadius: 12,
-          borderWidth: 1,
-          borderColor: '#E0E0E0',
-          marginBottom: 12,
-        }}
+        style={styles.input}
       />
 
-      <TouchableOpacity
-        onPress={handleSignup}
-        style={{
-          backgroundColor: '#0077B5',
-          padding: 16,
-          borderRadius: 12,
-          alignItems: 'center',
-          marginBottom: 12,
-        }}
-      >
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: '500' }}>
-          Sign Up
-        </Text>
+      <TouchableOpacity onPress={handleSignup} style={styles.buttonPrimary}>
+        <Text style={styles.buttonTextPrimary}>Sign Up</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
+
+const INDIGO = '#3F51B5';
+const LIGHT_INDIGO = '#E8EAF6';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: LIGHT_INDIGO,
+    padding: 24,
+    justifyContent: 'center',
+  },
+  heading: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: INDIGO,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  input: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 10,
+    fontSize: 16,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#D1D1D1',
+  },
+  buttonPrimary: {
+    backgroundColor: INDIGO,
+    paddingVertical: 16,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+    elevation: 3,
+  },
+  buttonTextPrimary: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+});
 
 export default StudentSignupScreen;

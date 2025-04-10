@@ -31,85 +31,85 @@ const StartupSignupScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: 'center' }}>
-      <Text style={{ fontSize: 32, fontWeight: '700', color: '#222', marginBottom: 20 }}>
-        Startup Signup 🚀
+    <View style={{ flex: 1, padding: 20, justifyContent: 'center', backgroundColor: '#E8EAF6' }}>
+      <Text style={{ fontSize: 32, fontWeight: '700', color: '#3F51B5', marginBottom: 20, textAlign: 'center' }}>
+        Startup Signup 
       </Text>
 
-      {/* 🏢 Startup Name */}
       <TextInput
         placeholder="Startup Name"
         value={name}
         onChangeText={setName}
         style={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#FFFFFF',
           padding: 16,
           borderRadius: 12,
           borderWidth: 1,
-          borderColor: '#E0E0E0',
+          borderColor: '#C5CAE9',
           marginBottom: 12,
+          fontSize: 16,
         }}
       />
 
-      {/* 📧 Email */}
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
+        autoCapitalize="none"
         style={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#FFFFFF',
           padding: 16,
           borderRadius: 12,
           borderWidth: 1,
-          borderColor: '#E0E0E0',
+          borderColor: '#C5CAE9',
           marginBottom: 12,
+          fontSize: 16,
         }}
       />
 
-      {/* 🔒 Password */}
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         style={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#FFFFFF',
           padding: 16,
           borderRadius: 12,
           borderWidth: 1,
-          borderColor: '#E0E0E0',
+          borderColor: '#C5CAE9',
           marginBottom: 12,
+          fontSize: 16,
         }}
       />
 
-      {/* 🆔 CIN */}
       <TextInput
         placeholder="CIN Number"
         value={cin}
         onChangeText={setCin}
         style={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#FFFFFF',
           padding: 16,
           borderRadius: 12,
           borderWidth: 1,
-          borderColor: '#E0E0E0',
-          marginBottom: 12,
+          borderColor: '#C5CAE9',
+          marginBottom: 16,
+          fontSize: 16,
         }}
       />
 
-      {/* 🚀 Signup Button */}
       <TouchableOpacity
         onPress={handleSignup}
         style={{
-          backgroundColor: '#0077B5',
-          padding: 16,
+          backgroundColor: '#3F51B5',
+          paddingVertical: 16,
           borderRadius: 12,
           alignItems: 'center',
-          marginBottom: 12,
+          elevation: 3,
         }}
       >
-        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '500' }}>
+        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: '600' }}>
           Sign Up
         </Text>
       </TouchableOpacity>

@@ -12,6 +12,8 @@ import ProfileScreen from '../screens/ProfileScreen';
 import PostProjectScreen from '../screens/PostProjectScreen';
 import ViewInternshipsScreen from '../screens/ViewInternshipsScreen';
 import ApplyInternshipScreen from '../screens/ApplyInternshipScreen';
+import MyApplicationsScreen from '../screens/MyApplicationsScreen';
+
 
 
 // 🚀 Startup Screens
@@ -39,6 +41,8 @@ const AppNavigator = () => {
           <Stack.Screen name="PostProject" component={PostProjectScreen} />
           <Stack.Screen name="ViewInternships" component={ViewInternshipsScreen} />
           <Stack.Screen name="ApplyInternship" component={ApplyInternshipScreen} />
+          <Stack.Screen name="MyApplications" component={MyApplicationsScreen} />
+
 
          
 

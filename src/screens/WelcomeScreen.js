@@ -1,78 +1,94 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const WelcomeScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to SkillSpot</Text>
-      <Text style={styles.subtitle}>
-        Bridging the gap between students and startups.
-      </Text>
-
-      {/* Student Button */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('StudentLogin')} // Changed replace to navigate
-      >
-        <Text style={styles.buttonText}>Login as Student</Text>
-      </TouchableOpacity>
-
-      {/* Startup Button */}
-      <TouchableOpacity
-        style={[styles.button, styles.secondaryButton]}
-        onPress={() => navigation.navigate('StartupLogin')} // Changed replace to navigate
-      >
-        <Text style={[styles.buttonText, styles.secondaryButtonText]}>
-          Login as Startup
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#3F51B5" barStyle="light-content" />
+      
+      <View style={styles.header}>
+        <Text style={styles.welcome}>Welcome to</Text>
+        <Text style={styles.brand}>SkillSpot</Text>
+        <Text style={styles.subtitle}>
+          Bridging the gap between students and startups.
         </Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+
+      <View style={styles.buttonsWrapper}>
+        <TouchableOpacity
+          style={styles.buttonPrimary}
+          onPress={() => navigation.navigate('StudentLogin')}
+        >
+          <Text style={styles.buttonTextPrimary}>Student Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.buttonPrimary}
+          onPress={() => navigation.navigate('StartupLogin')}
+        >
+          <Text style={styles.buttonTextPrimary}>Startup Login</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
+
+const INDIGO = '#3F51B5';
+const LIGHT_INDIGO = '#E8EAF6';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: LIGHT_INDIGO,
+    paddingHorizontal: 24,
     justifyContent: 'center',
-    padding: 24,
-    backgroundColor: '#F4F4F4',
   },
-  title: {
-    fontSize: 32,
+  header: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  welcome: {
+    fontSize: 20,
+    color: '#444',
+  },
+  brand: {
+    fontSize: 40,
     fontWeight: 'bold',
-    color: '#2C2C2C',
-    textAlign: 'center',
-    marginBottom: 12,
+    color: INDIGO,
+    marginTop: 5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#6A6A6A',
+    color: '#555',
     textAlign: 'center',
-    marginBottom: 32,
+    marginTop: 8,
+    paddingHorizontal: 12,
   },
-  button: {
-    backgroundColor: '#4CAF50',
+  buttonsWrapper: {
+    marginBottom: 30,
+  },
+  buttonPrimary: {
+    backgroundColor: INDIGO,
     paddingVertical: 14,
-    paddingHorizontal: 24,
     borderRadius: 10,
-    marginBottom: 16,
+    marginBottom: 20,
     alignItems: 'center',
+    elevation: 5,
   },
-  buttonText: {
-    color: '#FFFFFF',
+  buttonTextPrimary: {
+    color: '#fff',
     fontWeight: '600',
     fontSize: 16,
-  },
-  secondaryButton: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#4CAF50',
-  },
-  secondaryButtonText: {
-    color: '#4CAF50',
   },
 });
 

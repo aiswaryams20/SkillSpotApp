@@ -16,7 +16,6 @@ const StartupLoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
 
-      // ✅ Sign in using Supabase Auth
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -27,7 +26,6 @@ const StartupLoginScreen = ({ navigation }) => {
       const user = data?.user;
       if (!user) throw new Error('User not found.');
 
-      // ✅ Fetch user profile using email
       const { data: profile, error: profileError } = await supabase
         .from('startups')
         .select('*')
@@ -54,54 +52,53 @@ const StartupLoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20, justifyContent: 'center' }}>
-      <Text style={{ fontSize: 32, fontWeight: '700', color: '#222', marginBottom: 20, textAlign: 'center' }}>
-        Startup Login 🚀
+    <View style={{ flex: 1, padding: 20, justifyContent: 'center', backgroundColor: '#E8EAF6' }}>
+      <Text style={{ fontSize: 32, fontWeight: '700', color: '#3F51B5', marginBottom: 20, textAlign: 'center' }}>
+        Startup Login 
       </Text>
 
-      {/* 📧 Email */}
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
+        autoCapitalize="none"
         style={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#fff',
           padding: 16,
           borderRadius: 12,
           marginBottom: 12,
           fontSize: 16,
           borderWidth: 1,
-          borderColor: '#E0E0E0',
+          borderColor: '#C5CAE9',
         }}
       />
 
-      {/* 🔒 Password */}
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         style={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: '#fff',
           padding: 16,
           borderRadius: 12,
           marginBottom: 12,
           fontSize: 16,
           borderWidth: 1,
-          borderColor: '#E0E0E0',
+          borderColor: '#C5CAE9',
         }}
       />
 
-      {/* ✅ Login Button */}
       <TouchableOpacity
         onPress={handleLogin}
         style={{
-          backgroundColor: '#0077B5',
+          backgroundColor: '#3F51B5',
           paddingVertical: 16,
           borderRadius: 12,
           alignItems: 'center',
           marginBottom: 12,
+          elevation: 3,
         }}
         disabled={loading}
       >
@@ -110,10 +107,12 @@ const StartupLoginScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      {/* ➡️ Redirect to Signup */}
-      <TouchableOpacity onPress={() => navigation.replace('StartupSignup')}>
-        <Text style={{ color: '#0077B5', textAlign: 'center', marginTop: 8 }}>
-          Don’t have an account? Sign up here
+      <TouchableOpacity
+        onPress={() => navigation.replace('StartupSignup')}
+        style={{ marginTop: 12, alignItems: 'center' }}
+      >
+        <Text style={{ color: '#3F51B5', fontSize: 16 }}>
+          Don’t have an account? <Text style={{ fontWeight: '600' }}>Sign up</Text>
         </Text>
       </TouchableOpacity>
     </View>

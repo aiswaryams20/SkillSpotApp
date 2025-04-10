@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  Modal,
+  SafeAreaView,
+  Pressable,
+} from 'react-native';
 import { supabase } from '../config/supabase';
+
+const INDIGO = '#3F51B5';
+const LIGHT_BG = '#E8EAF6';
 
 const ApplyInternshipScreen = ({ route, navigation }) => {
   const { internshipId } = route.params;
   const [coverLetter, setCoverLetter] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleApply = async () => {
-    if (!coverLetter) {
-      Alert.alert('Error', 'Please add a cover letter.');
-      return;
-    }
-
+  const handleFinalSubmit = async () => {
     try {
-      // ✅ Step 1: Get student ID using authenticated user
       const { data: user, error: authError } = await supabase.auth.getUser();
       if (authError) throw authError;
 
@@ -26,22 +34,22 @@ const ApplyInternshipScreen = ({ route, navigation }) => {
 
         if (studentError) throw studentError;
 
-        // ✅ Step 2: Insert into applications table
         const { error: insertError } = await supabase
           .from('applications')
           .insert([
             {
-              internship_id: internshipId, // ✅ Link to internship
-              student_id: studentData.id, // ✅ Link to student
+              internship_id: internshipId,
+              student_id: studentData.id,
               cover_letter: coverLetter,
-              status: 'Pending', // ✅ Default status
+              status: 'Pending',
             },
           ]);
 
         if (insertError) throw insertError;
 
         Alert.alert('Success', 'Application submitted successfully!');
-        navigation.goBack(); // ✅ Go back to internships list
+        setModalVisible(false);
+        navigation.goBack();
       }
     } catch (error) {
       console.error('Apply Error:', error.message);
@@ -49,46 +57,154 @@ const ApplyInternshipScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleApplyPress = () => {
+    if (!coverLetter.trim()) {
+      Alert.alert('Error', 'Please add a cover letter.');
+      return;
+    }
+    setModalVisible(true); // show preview before final submit
+  };
+
   return (
-    <View style={{ flex: 1, padding: 20, backgroundColor: '#F9FAFB' }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>
-        ✍️ Submit Your Application
-      </Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.header}>Submit Your Application</Text>
+
       <TextInput
-        placeholder="Cover Letter"
+        placeholder="Write your cover letter here..."
         value={coverLetter}
         onChangeText={setCoverLetter}
         multiline
-        numberOfLines={5}
-        style={{
-          backgroundColor: '#FFFFFF',
-          padding: 16,
-          borderRadius: 12,
-          borderWidth: 1,
-          borderColor: '#E5E7EB',
-          marginBottom: 12,
-          fontSize: 16,
-          color: '#374151',
-          textAlignVertical: 'top',
-          height: 120,
-        }}
+        numberOfLines={6}
+        maxLength={1000}
+        style={styles.textArea}
       />
-      <TouchableOpacity
-        onPress={handleApply}
-        style={{
-          backgroundColor: '#2563EB',
-          paddingVertical: 16,
-          borderRadius: 12,
-          alignItems: 'center',
-          marginTop: 12,
-        }}
-      >
-        <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'bold' }}>
-          Submit Application
-        </Text>
+
+      {/* 🔢 Character Count */}
+      <Text style={styles.charCount}>{coverLetter.length}/1000 characters</Text>
+
+      <TouchableOpacity onPress={handleApplyPress} style={styles.button}>
+        <Text style={styles.buttonText}>Preview & Submit</Text>
       </TouchableOpacity>
-    </View>
+
+      {/* 🔍 Preview Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Preview the Cover Letter</Text>
+            <Text style={styles.modalContent}>{coverLetter}</Text>
+
+            <View style={styles.modalButtons}>
+              <Pressable
+                onPress={() => setModalVisible(false)}
+                style={[styles.modalBtn, { backgroundColor: '#E5E7EB' }]}
+              >
+                <Text style={{ color: '#1F2937', fontWeight: 'bold' }}>Edit</Text>
+              </Pressable>
+              <Pressable
+                onPress={handleFinalSubmit}
+                style={[styles.modalBtn, { backgroundColor: INDIGO }]}
+              >
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>Submit</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: LIGHT_BG,
+    padding: 20,
+  },
+  header: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: INDIGO,
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  textArea: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    fontSize: 16,
+    color: '#374151',
+    textAlignVertical: 'top',
+    height: 150,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  charCount: {
+    textAlign: 'right',
+    color: '#6B7280',
+    marginBottom: 16,
+    fontSize: 14,
+  },
+  button: {
+    backgroundColor: INDIGO,
+    paddingVertical: 16,
+    borderRadius: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '90%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 24,
+    elevation: 6,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: INDIGO,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  modalContent: {
+    fontSize: 16,
+    color: '#374151',
+    marginBottom: 24,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalBtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+  },
+});
 
 export default ApplyInternshipScreen;
