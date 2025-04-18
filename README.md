@@ -75,6 +75,9 @@ export const supabase = createClient(
 
 ```bash
 npx expo start
+
+**App Demonstration:**
+https://drive.google.com/file/d/16Z7SL1wMJ3LYnFzm0JST9TfHs7JNatnD/view?usp=sharing
 ```
 
 Then scan the QR code using the **Expo Go** app on your mobile device.  
