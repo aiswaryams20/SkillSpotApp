@@ -76,11 +76,20 @@ export const supabase = createClient(
 ```bash
 npx expo start
 
-**App Demonstration:**
-https://drive.google.com/file/d/16Z7SL1wMJ3LYnFzm0JST9TfHs7JNatnD/view?usp=sharing
 ```
 
 Then scan the QR code using the **Expo Go** app on your mobile device.  
 Your app will load and run on your phone instantly 🚀
 
 ---
+
+**App Demonstration:**
+https://drive.google.com/file/d/16Z7SL1wMJ3LYnFzm0JST9TfHs7JNatnD/view?usp=sharing
+
+---
+
+📱 **Download the APK**
+
+🤖 Open this link on your Android device (or scan the QR code) to install the app:
+
+👉 [Download SkillSpot APK](https://expo.dev/accounts/aiswarya20/projects/skillspotapp/builds/10c2eced-f351-4be8-a6f5-a92cd69340f2)
